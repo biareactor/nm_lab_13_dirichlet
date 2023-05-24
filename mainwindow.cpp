@@ -85,7 +85,7 @@ void MainWindow::fill_r(vecvec& r, const vecvec& v, const vecvec& f, double A, d
         for (size_t i = 1; i < n; i++)
         {
             if (idx_is_part_of_area(i, j))
-            {//fill_r(r, v_old, f, A, h, k, h2, k2);
+            {
                 r[i][j] = A * v[i][j] + h2 * v[i + 1][j] + h2 * v[i - 1][j] + k2 * v[i][j + 1] + k2 * v[i][j - 1] - f[i][j];
 
                 const double x = a + i * h;
@@ -267,12 +267,13 @@ void MainWindow::on_pushButton_clicked()
 
         for (size_t j = 0; j <= m; j++)
         {
-            size_t x_end = (j < m / 2) ? n : n / 2;
-
-            for (size_t i = 0; i <= x_end; i++)
+            for (size_t i = 0; i <= n; i++)
             {
-                v_old[i][j] = v[i][j];
-                h_old[i][j] = hs[i][j];
+                if (idx_is_part_of_area(i, j))
+                {
+                    v_old[i][j] = v[i][j];
+                    h_old[i][j] = hs[i][j];
+                }
             }
         }
 
