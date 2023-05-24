@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout">
+   <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0">
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
@@ -27,7 +27,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="n"/>
+         <widget class="QLineEdit" name="n">
+          <property name="text">
+           <string>4</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -41,7 +45,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="m"/>
+         <widget class="QLineEdit" name="m">
+          <property name="text">
+           <string>4</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -55,7 +63,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="Nmax"/>
+         <widget class="QLineEdit" name="Nmax">
+          <property name="text">
+           <string>0.000001</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -69,7 +81,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="eps"/>
+         <widget class="QLineEdit" name="eps">
+          <property name="text">
+           <string>1000</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -83,7 +99,58 @@
      </layout>
     </item>
     <item row="1" column="0">
-     <widget class="QTableWidget" name="table"/>
+     <widget class="QTabWidget" name="uv_table">
+      <property name="currentIndex">
+       <number>1</number>
+      </property>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>v0(i, j)</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_5">
+        <item row="0" column="0">
+         <widget class="QTableWidget" name="v0_table">
+          <attribute name="horizontalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="verticalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_2">
+       <attribute name="title">
+        <string>u(i, j)</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="0" column="0">
+         <widget class="QTableWidget" name="u_table"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_3">
+       <attribute name="title">
+        <string>vN(i, j)</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="0" column="0">
+         <widget class="QTableWidget" name="vn_table"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_4">
+       <attribute name="title">
+        <string>u(i, j) - vN(i, j)</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="0">
+         <widget class="QTableWidget" name="tableWidget_3"/>
+        </item>
+       </layout>
+      </widget>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -93,7 +160,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>26</height>
     </rect>
    </property>
   </widget>

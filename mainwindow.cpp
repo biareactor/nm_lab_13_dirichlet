@@ -3,6 +3,7 @@
 #include "ui_mainwindow.h"
 
 #include <vector>
+#include <algorithm>
 
 using vec = std::vector<double>;
 using vecvec = std::vector<std::vector<double>>;
@@ -16,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 bool MainWindow::idx_is_part_of_area(size_t i, size_t j)
 {
-    if (j < m / 2)
+    if (j <= m / 2)
         return true;
     else
         return i <= n / 2;
@@ -106,6 +107,21 @@ void MainWindow::fill_r(vecvec& r, const vecvec& v, const vecvec& f, double A, d
     }
 }
 
+void MainWindow::fill_u_test(vecvec& u_test, size_t rows, size_t columns)
+{
+    for (size_t i = 0; i < rows; i++)
+    {
+        for (size_t j = 0; j < columns; j++)
+        {
+            const double h = (b - a) / n;
+            const double k = (d - c) / m;
+            double x = a + i * h;
+            double y = c + j * k;
+            u_test[i][j] = std::exp(1 - x * x - y * y);
+        }
+    }
+}
+
 double MainWindow::get_beta(double A, const vecvec& r, const vecvec& h, double h2, double k2)
 {
     long double beta = 0, tmp_beta = 0;
@@ -184,6 +200,29 @@ double MainWindow::get_R(const vecvec& r)
     return std::sqrt(R0);
 }
 
+void MainWindow::fill_table(QTableWidget* table, size_t columns, size_t rows, const vec& values)
+{
+    table->clear();
+    table->setColumnCount(columns+1);
+    table->setRowCount(rows+1);
+
+    table->setItem(0, 0, new QTableWidgetItem("i/j"));
+
+    for (size_t i = 0; i < rows; i++)
+        table->setItem(i+1, 0, new QTableWidgetItem(QString::number(i)));
+
+    for (size_t j = 0; j < columns; j++)
+        table->setItem(0, j+1, new QTableWidgetItem(QString::number(j)));
+
+    for (size_t i = 0; i < rows; i++)
+    {
+        for (size_t j = 0; j < columns; j++)
+        {
+            table->setItem(i+1, j+1, new QTableWidgetItem(QString::number(round(values[i][j] * 1e8) / 1e8)));
+        }
+    }
+}
+
 void MainWindow::on_pushButton_clicked()
 {
     n = ui->n->text().toUInt();
@@ -216,24 +255,14 @@ void MainWindow::on_pushButton_clicked()
 
     init_v(v, h, k);
     init_f(f, h, k);
-    fill_r(r, v, f, h, k, h2, k2);
+    fill_r(r, v, f, A, h, k, h2, k2);
 
     double R0 = get_R(r);
 
-    const size_t columns = std::min(100, n);
-    const size_t rows = std::min(100, m);
+    const size_t columns = std::min<size_t>(100, n+1);
+    const size_t rows = std::min<size_t>(100, m+1);
 
-    ui->table->clear();
-    ui->table->setColumnCount(columns);
-    ui->table->setRowCount(rows);
-
-    for (size_t i = 0; i <= rows; i++)
-    {
-        for (size_t j = 0; j <= columns; j++)
-        {
-            table->setItem(i, j, new QTableWidgetItem(QString::number(round(idx_is_part_of_area(i,j)* v[i][j] * 1e8) / 1e8)));
-        }
-    }
+    fill_table(ui->v0_table, columns, rows, v);
 
     std::vector<std::vector<double>> v_old(n + 1, std::vector<double>(m + 1, 0.0));
     std::vector<std::vector<double>> h_old(n + 1, std::vector<double>(m + 1, 0.0));
@@ -285,33 +314,50 @@ void MainWindow::on_pushButton_clicked()
     }
 
     double RN = get_R(r);
+    std::vector<std::vector<double>> u_test(n + 1, std::vector<double>(m + 1, 0.0));
+    fill_u_test(u_test, rows, columns);
 
-//    for (int j = 0; j <= m; j++)
-//    {
-//        for (int i = 0; i <= n; i++)
-//        {
-//            if (idx_is_part_of_area(i, j))
-//            {
-//                if (std::abs(u_test(i, j, n, m) - v[i][j]) > solve_err) {
-//                    solve_err = std::abs(u_test(i, j, n, m) - v[i][j]);
-//                }
-//            }
-//        }
-//    }
+    for (int j = 0; j <= m; j++)
+    {
+        for (int i = 0; i <= n; i++)
+        {
+            if (idx_is_part_of_area(i, j))
+            {
+                if (std::abs(u_test[i][j] - v[i][j]) > solve_err) {
+                    solve_err = std::abs(u_test[i][j] - v[i][j]);
+                }
+            }
+        }
+    }
 
-//    for (int j = 0; j <= m; j++)
-//    {
-//        int x_end = (j < m / 2) ? n : n / 2;
+    for (int j = 0; j <= m; j++)
+    {
+        for (int i = 0; i <= n; i++)
+        {
+            if (idx_is_part_of_area(i, j))
+            {
+                if (std::abs(u_test[i][j] - v[i][j]) > uv_max) {
+                    uv_max = std::abs(u_test[i][j] - v[i][j]);
+                    x_max = a + i * h;
+                    y_max = c + j * k;
+                }
+            }
+        }
+    }
 
-//        for (int i = 0; i <= x_end; i++)
-//        {
-//            if (std::abs(u_test(i, j, n, m) - v[i][j]) > uv_max) {
-//                uv_max = std::abs(u_test(i, j, n, m) - v[i][j]);
-//                x_max = a + i * h;
-//                y_max = c + j * k;
-//            }
-//        }
-//    }
+    fill_table(ui->u_table, columns, rows, u_test);
+    fill_table(ui->vn_table, columns, rows, v);
+
+    std::vector<std::vector<double>> uv(n + 1, std::vector<double>(m + 1, 0.0));
+
+    for (size_t i = 0; i < rows; i++)
+    {
+        for (size_t j = 0; j < columns; j++)
+        {
+            uv[i][j] = u_test[i][j]-v[i][j];
+        }
+    }
+
 }
 
 //System::Void buttonCalculateTest_Click(System::Object^ sender, System::EventArgs^ e) {
