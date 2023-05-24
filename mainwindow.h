@@ -29,20 +29,16 @@ private:
     using vecvec = std::vector<std::vector<double>>;
 
     bool idx_is_part_of_area(size_t i, size_t j);
-    bool coord_is_part_of_area(double x, double y);
-
-    template <typename func>
-    std::pair<double, double> get_minmax(double a, double b, double c, double d, double xstep, double ystep, func f);
 
     void init_v(vecvec& v, double h, double k);
     void init_f(vecvec& f, double h, double k);
 
     void fill_r(vecvec& r, const vecvec& v, const vecvec& f, double A, double h, double k, double h2, double k2);
-    void fill_u_test(vecvec& u_test, size_t rows, size_t columns);
-    void fill_table(QTableWidget* table, size_t columns, size_t rows, const vec& values);
+    void fill_u_test(vecvec& u_test);
+    void fill_table(QTableWidget* table, size_t columns, size_t rows, const vecvec& values);
 
-    double get_beta(double A, const vecvec& r, const vecvec& h, double h2, double k2);
-    double get_alpha(double A, const vecvec& r, const vecvec& h, double h2, double k2);
+    long double get_beta(double A, const vecvec& r, const vecvec& h, double h2, double k2);
+    long double get_alpha(double A, const vecvec& r, const vecvec& h, double h2, double k2);
     double get_R(const vecvec& r);
 
     double mu1_test(double y) {
@@ -56,12 +52,12 @@ private:
     }
 
     double mu3_test(double y) {
-        double res = std::exp(1 - y * y); //x = (b-a)/2 = 0
+        double res = std::exp(1 - y * y); //x = a + (b-a)/2 = 0
         return res;
     }
 
     double mu4_test(double x) {
-        double res = std::exp(1 -x * x); //y = (d-c)/2 = 0
+        double res = std::exp(1 - x * x); //y = c + (d-c)/2 = 0
         return res;
     }
 
@@ -76,7 +72,7 @@ private:
     }
 
     double f_test(double x, double y) {
-        return (-4) * (1 - x * x - y * y) * std::exp(1 - x * x - y * y);
+        return 4 * (1 - x * x - y * y) * std::exp(1 - x * x - y * y);
     }
 
 private:
@@ -88,29 +84,5 @@ private:
     const double c = -1.0;
     const double d = 1.0;
 };
-
-template <typename func>
-std::pair<double, double> MainWindow::get_minmax(double a, double b, double c, double d, double xstep, double ystep, func get_val)
-{
-    double max = DBL_MAX, min = max;
-
-    for (double x = a; x <= b; x += xstep)
-    {
-        for (double y = c; y <= d; y += ystep)
-        {
-            if (coord_is_part_of_area(x, d))
-            {
-                size_t i = size_t((x - a) / xstep);
-                size_t j = size_t((y - c) / ystep);
-
-                double val = get_val(i, j, x, y);
-                if (val > max) max = val;
-                else if (val < min) min = val;
-            }
-        }
-    }
-
-    return {min, max};
-}
 
 #endif // MAINWINDOW_H

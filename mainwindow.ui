@@ -16,92 +16,227 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0">
-     <layout class="QVBoxLayout" name="verticalLayout">
+     <layout class="QHBoxLayout" name="horizontalLayout_12" stretch="1,2">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1">
+       <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Число разбиений по x</string>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1">
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Число разбиений по x</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="n">
+            <property name="text">
+             <string>100</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
-         <widget class="QLineEdit" name="n">
+         <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,1">
+          <item>
+           <widget class="QLabel" name="label_4">
+            <property name="text">
+             <string>Число разбиений по y</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="m">
+            <property name="text">
+             <string>100</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,1">
+          <item>
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Точность метода</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="eps">
+            <property name="text">
+             <string>0.000001</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="1,1">
+          <item>
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>Макс. кол-во итераций</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="Nmax">
+            <property name="text">
+             <string>30000</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton">
           <property name="text">
-           <string>4</string>
+           <string>Вычислить</string>
           </property>
          </widget>
         </item>
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,1">
+       <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>Число разбиений по y</string>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <widget class="QLabel" name="label_5">
+            <property name="text">
+             <string>Метод:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_6">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
-         <widget class="QLineEdit" name="m">
-          <property name="text">
-           <string>4</string>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <item>
+           <widget class="QLabel" name="label_7">
+            <property name="text">
+             <string>Достигнутая точность метода:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="eps_max">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_7">
+          <item>
+           <widget class="QLabel" name="label_9">
+            <property name="text">
+             <string>Кол-во итераций:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="N">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_8">
+          <item>
+           <widget class="QLabel" name="label_11">
+            <property name="text">
+             <string>Достигнутая погрешность решения:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="UV">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_9">
+          <item>
+           <widget class="QLabel" name="label_13">
+            <property name="text">
+             <string>Макс. разность двух решений |U-V|
+достигается в точке (x, y):</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="UV_coord">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_10">
+          <item>
+           <widget class="QLabel" name="label_17">
+            <property name="text">
+             <string>Невязка СЛАУ на нач. приближении R0_2: </string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="R0">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_11">
+          <item>
+           <widget class="QLabel" name="label_15">
+            <property name="text">
+             <string>Схема на сетке решена с невязкой RN_2:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="RN">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,1">
-        <item>
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Точность метода</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="Nmax">
-          <property name="text">
-           <string>0.000001</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="1,1">
-        <item>
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>Макс. кол-во итераций</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="eps">
-          <property name="text">
-           <string>1000</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton">
-        <property name="text">
-         <string>Вычислить</string>
-        </property>
-       </widget>
       </item>
      </layout>
     </item>
     <item row="1" column="0">
-     <widget class="QTabWidget" name="uv_table">
+     <widget class="QTabWidget" name="tab_widget1">
       <property name="currentIndex">
-       <number>1</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -126,7 +261,14 @@
        </attribute>
        <layout class="QGridLayout" name="gridLayout_4">
         <item row="0" column="0">
-         <widget class="QTableWidget" name="u_table"/>
+         <widget class="QTableWidget" name="u_table">
+          <attribute name="horizontalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="verticalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -136,7 +278,14 @@
        </attribute>
        <layout class="QGridLayout" name="gridLayout_3">
         <item row="0" column="0">
-         <widget class="QTableWidget" name="vn_table"/>
+         <widget class="QTableWidget" name="vn_table">
+          <attribute name="horizontalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="verticalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -146,7 +295,14 @@
        </attribute>
        <layout class="QGridLayout" name="gridLayout">
         <item row="0" column="0">
-         <widget class="QTableWidget" name="tableWidget_3"/>
+         <widget class="QTableWidget" name="uv_table">
+          <attribute name="horizontalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="verticalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
+         </widget>
         </item>
        </layout>
       </widget>
