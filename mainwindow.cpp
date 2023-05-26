@@ -18,18 +18,18 @@ MainWindow::MainWindow(QWidget *parent)
 
 bool MainWindow::idx_is_part_of_area_include(size_t i, size_t j)
 {
-    if (j <= m / 2)
+    if (j <= m / 4 || j >= m * 3 / 4)
         return true;
     else
-        return i <= n / 2;
+        return i <= n / 4 || i >= n * 3 / 4;
 }
 
 bool MainWindow::idx_is_part_of_area(size_t i, size_t j)
 {
-    if (j < m / 2)
+    if (j < m / 4 || j > m * 3 / 4)
         return true;
     else
-        return i < n / 2;
+        return i < n / 4 || i > n * 3 / 4;
 }
 
 void MainWindow::fill_u_test(vecvec& u_test_vec)
@@ -136,33 +136,26 @@ void MainWindow::on_pushButton_clicked()
     {
         double y = c + j * k;
         v[0][j] = mu1_test(y);
-    }
-    for (size_t j = 0; j <= m / 2; j++)
-    {
-        double y = c + j * k;
         v[n][j] = mu2_test(y);
     }
     for (size_t i = 0; i <= n; i++)
     {
         double x = a + i * h;
         v[i][0] = mu3_test(x);
-    }
-    for (size_t i = 0; i <= n/2; i++)
-    {
-        double x = a + i * h;
         v[i][m] = mu4_test(x);
     }
-
-    for (size_t j = m / 2; j <= m; j++)
+    for (size_t j = m / 4; j <= m * 3 / 4; j++)
     {
         double y = c + j * k;
-        v[n/2][j] = mu5_test(y);
+        v[n/4][j] = mu5_test(y);
+        v[n*3/4][j] = mu6_test(y);
     }
 
-    for (size_t i = n/2; i <= n; i++)
+    for (size_t i = n/4; i <= n*3/4; i++)
     {
         double x = a + i * h;
-        v[i][m / 2] = mu6_test(x);
+        v[i][m/4] = mu7_test(x);
+        v[i][m*3/4] = mu8_test(x);
     }
 
 
@@ -194,18 +187,18 @@ void MainWindow::on_pushButton_clicked()
            if (idx_is_part_of_area(i,j))
            {
                r[i][j] = A * v[i][j] + h2 * v[i + 1][j] + h2 * v[i - 1][j] + k2 * v[i][j + 1] + k2 * v[i][j - 1] - f[i][j];
-               if (i == 1) {
-                   r[i][j] -= h2 * v[i - 1][j] - mu1_test(c + j * k) * h2;
-               }
-               if (j == 1) {
-                   r[i][j] -= k2 * v[i][j - 1] - mu3_test(a + i * h) * k2;
-               }
-               if (i == n - 1) {
-                   r[i][j] -= h2 * v[i + 1][j] - mu2_test(c + j * k) * h2;
-               }
-               if (j == m - 1) {
-                   r[i][j] -= k2 * v[i][j + 1] - mu4_test(a + i * h) * k2;
-               }
+
+               if (i == 1)         r[i][j] -= h2 * v[i - 1][j] - mu1_test(c + j * k) * h2;
+               if (i == n - 1)     r[i][j] -= h2 * v[i + 1][j] - mu2_test(c + j * k) * h2;
+
+               if (j == 1)         r[i][j] -= k2 * v[i][j - 1] - mu3_test(a + i * h) * k2;
+               if (j == m - 1)     r[i][j] -= k2 * v[i][j + 1] - mu4_test(a + i * h) * k2;
+
+               if (i == n*3/4 + 1) r[i][j] -= h2 * v[i - 1][j] - mu6_test(c + j * k) * h2;
+               if (i == n/4 - 1)   r[i][j] -= h2 * v[i + 1][j] - mu5_test(c + j * k) * h2;
+
+               if (j == m*3/4 + 1) r[i][j] -= k2 * v[i][j - 1] - mu8_test(a + i * h) * k2;
+               if (j == m/4 - 1)   r[i][j] -= k2 * v[i][j + 1] - mu7_test(a + i * h) * k2;
            }
 
        }
@@ -245,33 +238,34 @@ void MainWindow::on_pushButton_clicked()
                {
                    r[i][j] = A * v_old[i][j] + h2 * v_old[i + 1][j] + h2 * v_old[i - 1][j] +
                        k2 * v_old[i][j + 1] + k2 * v_old[i][j - 1] - f[i][j];
-                   if (i == 1) {
-                       r[i][j] -= h2 * v_old[i - 1][j] - mu1_test(c + j * k) * h2;
-                   }
-                   if (j == 1) {
-                       r[i][j] -= k2 * v_old[i][j - 1] - mu3_test(a + i * h) * k2;
-                   }
-                   if (i == n - 1) {
-                       r[i][j] -= h2 * v_old[i + 1][j] - mu2_test(c + j * k) * h2;
-                   }
-                   if (j == m - 1) {
-                       r[i][j] -= k2 * v_old[i][j + 1] - mu4_test(a + i * h) * k2;
-                   }
+
+                   if (i == 1)         r[i][j] -= h2 * v[i - 1][j] - mu1_test(c + j * k) * h2;
+                   if (i == n - 1)     r[i][j] -= h2 * v[i + 1][j] - mu2_test(c + j * k) * h2;
+
+                   if (j == 1)         r[i][j] -= k2 * v[i][j - 1] - mu3_test(a + i * h) * k2;
+                   if (j == m - 1)     r[i][j] -= k2 * v[i][j + 1] - mu4_test(a + i * h) * k2;
+
+                   if (i == n*3/4 + 1) r[i][j] -= h2 * v[i - 1][j] - mu6_test(c + j * k) * h2;
+                   if (i == n/4 - 1)   r[i][j] -= h2 * v[i + 1][j] - mu5_test(c + j * k) * h2;
+
+                   if (j == m*3/4 + 1) r[i][j] -= k2 * v[i][j - 1] - mu8_test(a + i * h) * k2;
+                   if (j == m/4 - 1)   r[i][j] -= k2 * v[i][j + 1] - mu7_test(a + i * h) * k2;
+
 
                    double Ah_old = (A * h_old[i][j] + h2 * h_old[i + 1][j] + h2 * h_old[i - 1][j] +
                        k2 * h_old[i][j + 1] + k2 * h_old[i][j - 1]);
-                   if (i == 1) {
-                       Ah_old -= h2 * h_old[i - 1][j];
-                   }
-                   if (j == 1) {
-                       Ah_old -= k2 * h_old[i][j - 1];
-                   }
-                   if (i == n - 1) {
-                       Ah_old -= h2 * h_old[i + 1][j];
-                   }
-                   if (j == m - 1) {
-                       Ah_old -= k2 * h_old[i][j + 1];
-                   }
+
+                   if (i == 1)         Ah_old -= h2 * h_old[i - 1][j];
+                   if (j == 1)         Ah_old -= k2 * h_old[i][j - 1];
+
+                   if (i == n - 1)     Ah_old -= h2 * h_old[i + 1][j];
+                   if (j == m - 1)     Ah_old -= k2 * h_old[i][j + 1];
+
+                   if (i == n*3/4 + 1) Ah_old -= h2 * h_old[i - 1][j];
+                   if (i == n/4 - 1)   Ah_old -= h2 * h_old[i + 1][j];
+
+                   if (j == m*3/4 + 1) Ah_old -= k2 * h_old[i][j - 1];
+                   if (j == m/4 - 1)   Ah_old -= k2 * h_old[i][j + 1];
 
                    beta += Ah_old * r[i][j];
                    tmp_beta += Ah_old * h_old[i][j];
@@ -300,18 +294,19 @@ void MainWindow::on_pushButton_clicked()
                {
                    double Ah = (A * hs[i][j] + h2 * hs[i + 1][j] + h2 * hs[i - 1][j] +
                        k2 * hs[i][j + 1] + k2 * hs[i][j - 1]);
-                   if (i == 1) {
-                       Ah -= h2 * hs[i - 1][j];
-                   }
-                   if (j == 1) {
-                       Ah -= k2 * hs[i][j - 1];
-                   }
-                   if (i == n - 1) {
-                       Ah -= h2 * hs[i + 1][j];
-                   }
-                   if (j == m - 1) {
-                       Ah -= k2 * hs[i][j + 1];
-                   }
+
+                   if (i == 1)         Ah -= h2 * hs[i - 1][j];
+                   if (j == 1)         Ah -= k2 * hs[i][j - 1];
+
+                   if (i == n - 1)     Ah -= h2 * hs[i + 1][j];
+                   if (j == m - 1)     Ah -= k2 * hs[i][j + 1];
+
+                   if (i == n*3/4 + 1) Ah -= h2 * hs[i - 1][j];
+                   if (i == n/4 - 1)   Ah -= h2 * hs[i + 1][j];
+
+                   if (j == m*3/4 + 1) Ah -= k2 * hs[i][j - 1];
+                   if (j == m/4 - 1)   Ah -= k2 * hs[i][j + 1];
+
                    alpha -= r[i][j] * hs[i][j];
                    tmp_alpha += Ah * hs[i][j];
                }

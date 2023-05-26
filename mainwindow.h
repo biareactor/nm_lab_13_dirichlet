@@ -100,17 +100,26 @@ private:
     }
 
     double mu5_test(double y) {
-        double res = std::exp(1 - y * y); //x = a + (b-a)/2 = 0
+        double res = std::exp(1 - 0.25 - y * y); //x = a + (b-a)/4 = -0.5
         return res;
     }
 
-    double mu6_test(double x) {
-        double res = std::exp(1 - x * x); //y = c + (d-c)/2 = 0
+    double mu6_test(double y) {
+        double res = std::exp(1 - 0.25 - y * y); //x = a + 3(b-a)/4 = 0.5
+        return res;
+    }
+
+    double mu7_test(double x) {
+        double res = std::exp(1 - 0.25 - x * x); //y = c + (d-c)/4 = -0.5
+        return res;
+    }
+    double mu8_test(double x) {
+        double res = std::exp(1 - 0.25 - x * x); //y = c + 3(d-c)/4 = 0.5
         return res;
     }
 
     double f_test(double x, double y) {
-        return (-4) * (1 - x * x - y * y) * std::exp(1 - x * x - y * y);
+        return -4 * (1 - x * x - y * y) * std::exp(1 - x * x - y * y);
     }
 
     bool save_to_file(const vecvec& values, const QString& filename);
